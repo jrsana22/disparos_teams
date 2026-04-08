@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  PDF
+  AUDIO
+  MIXED
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum RepeatType {
+  ONCE
+  DAILY
+  WEEKLY
+  CUSTOM
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  name      String
+  role      Role       @default(USER)
+  active    Boolean    @default(true)
+  instance  Instance?
+  campaigns Campaign[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Instance {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiUrl       String
+  apiKey       String
+  instanceName String
+  connected    Boolean  @default(false)
+  updatedAt    DateTime @updatedAt
+}
+
+model Campaign {
+  id           String         @id @default(cuid())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  groups       String         // JSON array of group IDs
+  scheduledAt  DateTime
+  timezone     String         @default("America/Sao_Paulo")
+  type         MessageType    @default(TEXT)
+  content      String?
+  mediaUrl     String?
+  mediaCaption String?
+  status       CampaignStatus @default(DRAFT)
+  repeat       RepeatType     @default(ONCE)
+  delaySeconds Int            @default(0)
+  logs         Log[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Log {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  groupId    String
+  groupName  String?
+  status     String
+  error      String?
+  sentAt     DateTime @default(now())
+}
