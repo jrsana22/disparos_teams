@@ -1,0 +1,5 @@
+DATABASE_URL=postgresql://neondb_owner:npg_choW6ZK4mUPE@ep-gentle-base-ammqjmmk-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require
+DIRECT_URL=postgresql://neondb_owner:npg_choW6ZK4mUPE@ep-gentle-base-ammqjmmk.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require
+NEXTAUTH_SECRET=4vzaaHhr1vFAROaWM1Qb+acbPvVdeQ4yvDtgegKFpTc=
+NEXTAUTH_URL=https://disparosteams.vercel.app
+CRON_SECRET=a1w6amghNoHjEsv0BGYpaGWQB6PgPTb3/kinA+gTP40=
