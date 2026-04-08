@@ -3,6 +3,7 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["@prisma/client", "bcryptjs"],
   },
+  output: 'standalone',
   images: {
     remotePatterns: [
       {
@@ -12,5 +13,4 @@ const nextConfig = {
     ],
   },
 };
-
 module.exports = nextConfig;
